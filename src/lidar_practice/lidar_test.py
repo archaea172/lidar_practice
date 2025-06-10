@@ -13,9 +13,11 @@ class LidarTestNode(Node):
             self.lidar_callback,
             10
         )
+        
 
     def lidar_callback(self, rxdata:LaserScan):
         self.range = rxdata.ranges
+        self.get_logger().info(str(self.range[541]))
         
 
 def main_lidar_test():
@@ -29,4 +31,3 @@ def main_lidar_test():
         lidar_test_node.destroy_node()
         rclpy.shutdown()
 
-        
