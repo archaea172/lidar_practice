@@ -25,26 +25,16 @@ class LidarTestNode(Node):
         
 
     def lidar_callback(self, rxdata:LaserScan):
-        self.range = rxdata.ranges
-        
-        for i in range(len(self.range)):
-            try:
-                angle = 2*np.pi/len(self.range)*i
-                zahyo = np.array([np.cos(angle), np.sin(angle)])*self.range[i]*100
-                self.point[i] = zahyo.copy
+        angle = rxdata.angle_min
+        self.point_zahyo = np.ndarray((len(rxdata.ranges), 2))
+        for point in rxdata.ranges:
+            zahyo = np.array([np.cos(angle), np.sin(angle)])*point
+            angle += rxdata.angle_increment
 
-            except:
-                continue
+        self.get_logger().info(str(zahyo[224]))
         
     def timer_callback(self):
-        img = np.full((700, 700, 3), 128, dtype=np.uint8)
-        
-        for i in range(455):
-            # cv2.circle(img, self.point[i], 1, (255, 0, 0), -1)
-        # cv2.imshow("lidar", img)
-            pass
-        self.get_logger().info(str(self.point[0]))
-        cv2.waitKey(3)
+        pass
         
 
 def main_lidar_test():
