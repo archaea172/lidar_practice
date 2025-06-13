@@ -3,6 +3,7 @@ from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 
 import numpy as np
+from matplotlib import pyplot as plt
 
 class LidarTestNode(Node):
     def __init__(self):
@@ -29,7 +30,9 @@ class LidarTestNode(Node):
             zahyo = np.array([np.cos(angle), np.sin(angle)])*range
             angle += rxdata.angle_increment
             self.point = np.vstack([self.point, zahyo])
-        self.get_logger().info(str(self.point.shape))
+        for one in self.point:
+            plt.plot(one[0], one[1], '.')
+        plt.show()
 
         
     def timer_callback(self):
