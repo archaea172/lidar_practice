@@ -30,8 +30,14 @@ class LidarTestNode(Node):
             zahyo = np.array([np.cos(angle), np.sin(angle)])*range
             angle += rxdata.angle_increment
             self.point = np.vstack([self.point, zahyo])
+            if angle > np.pi:
+                break
+        
+
+        _, ax = plt.subplots()
         for one in self.point:
-            plt.plot(one[0], one[1], '.')
+            ax.plot(one[0], one[1], '.')
+        ax.set_aspect('equal')
         plt.show()
 
         
